@@ -18,9 +18,9 @@
     "noEmit": true,
     "types": ["node", "vite/client"],
     "paths": {
-      "~/*": ["./src/*"],
+      "$/*": ["./src/common/*"],
       "@/*": ["./src/components/*"],
-      "$/*": ["./src/common/*"]
+      "~/*": ["./src/*"]
     },
     "strictNullChecks": true
   },
