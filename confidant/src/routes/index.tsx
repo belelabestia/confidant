@@ -1,13 +1,7 @@
 import { component$ } from "@builder.io/qwik";
-import {
-  action$,
-  DocumentHead,
-  Form,
-  loader$,
-  z,
-  zod$,
-} from "@builder.io/qwik-city";
-import { Encrypted } from "~/common/encrypted";
+import type { DocumentHead } from "@builder.io/qwik-city";
+import { action$, Form, loader$, z, zod$ } from "@builder.io/qwik-city";
+import type { Encrypted } from "~/common/models";
 import { decrypt, encrypt } from "~/common/crypto";
 import { test } from "~/common/storage";
 
@@ -23,16 +17,11 @@ export const save = loader$(() => {
   return data;
 });
 
-export const read = action$(
-  ({ password }) => {
-    console.log("route action");
-    if (store.data === null) return null;
-    return { content: decrypt(store.data, password) };
-  },
-  zod$({
-    password: z.string(),
-  })
-);
+export const read = action$(({ password }) => {
+  console.log("route action");
+  if (store.data === null) return null;
+  return { content: decrypt(store.data, password) };
+}, zod$({ password: z.string() }));
 
 export default component$(() => {
   const s = save();

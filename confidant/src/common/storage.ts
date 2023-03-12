@@ -1,15 +1,23 @@
-import { mkdirSync, readFileSync, writeFileSync } from "fs";
+import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "fs";
 import { decrypt, encrypt } from "./crypto";
-import { Encrypted } from "./encrypted";
+import { Encrypted, FileName } from "./models";
 
-export const write = (name: string, content: Encrypted): void => {
+export const list = (): string[] => {
+  try {
+    return readdirSync("storage");
+  } catch {
+    return [];
+  }
+};
+
+export const write = (name: FileName, content: Encrypted): void => {
   const json = JSON.stringify(content);
 
   mkdirSync("storage", { recursive: true });
   writeFileSync(filePath(name), json);
 };
 
-export const read = (name: string): Encrypted | null => {
+export const read = (name: FileName): Encrypted | null => {
   try {
     const fileContent = readFileSync(filePath(name)).toString("utf-8");
     const jsonObject = JSON.parse(fileContent);
@@ -21,17 +29,23 @@ export const read = (name: string): Encrypted | null => {
   }
 };
 
-const filePath = (fileName: string) =>
+const filePath = (fileName: FileName) =>
   "storage/" + fileName + ".confidant.json";
 
 export const test = () => {
   const encrypted = encrypt("dad3da", "password");
-  write("some_name", encrypted);
-  const content = read("some_name");
+  write(FileName.parse("some_name0"), encrypted);
+  write(FileName.parse("some_name1"), encrypted);
+  write(FileName.parse("some_name2"), encrypted);
+  write(FileName.parse("some_name3"), encrypted);
+  const content = read(FileName.parse("some_name"));
   console.log(content);
 
   if (content == null) return;
 
   const decrypted = decrypt(content, "password");
   console.log(decrypted);
+
+  const files = list();
+  console.log(files);
 };

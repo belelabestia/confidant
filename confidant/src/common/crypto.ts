@@ -4,7 +4,7 @@ import {
   randomBytes,
   scryptSync,
 } from "crypto";
-import { Encrypted } from "./encrypted";
+import type { Encrypted } from "./models";
 
 const algorithm = "aes-256-gcm";
 
