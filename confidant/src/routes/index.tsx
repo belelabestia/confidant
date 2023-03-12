@@ -1,9 +1,9 @@
 import { component$ } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 import { action$, Form, loader$, z, zod$ } from "@builder.io/qwik-city";
-import type { Encrypted } from "~/common/models";
-import { decrypt, encrypt } from "~/common/crypto";
-import { test } from "~/common/storage";
+import type { Encrypted } from "$/models";
+import { decrypt, encrypt } from "$/crypto";
+import { test } from "$/storage";
 
 type Store = { data: Encrypted | null };
 const store: Store = { data: null };
@@ -43,12 +43,4 @@ export default component$(() => {
   );
 });
 
-export const head: DocumentHead = {
-  title: "Welcome to Qwik",
-  meta: [
-    {
-      name: "description",
-      content: "Qwik site description",
-    },
-  ],
-};
+export const head: DocumentHead = { title: "Confidant - tell me anything" };
