@@ -1,19 +1,24 @@
-import { readFileSync, writeFileSync } from "fs";
+import { mkdirSync, readFileSync, writeFileSync } from "fs";
 import { decrypt, encrypt } from "./crypto";
 import { Encrypted } from "./encrypted";
 
-export const write = (name: string, content: Encrypted) => {
+export const write = (name: string, content: Encrypted): void => {
   const json = JSON.stringify(content);
 
+  mkdirSync("storage", { recursive: true });
   writeFileSync(filePath(name), json);
 };
 
 export const read = (name: string): Encrypted | null => {
-  const fileContent = readFileSync(filePath(name)).toString("utf-8");
-  const jsonObject = JSON.parse(fileContent);
-  const parseResult = Encrypted.safeParse(jsonObject);
+  try {
+    const fileContent = readFileSync(filePath(name)).toString("utf-8");
+    const jsonObject = JSON.parse(fileContent);
+    const parseResult = Encrypted.safeParse(jsonObject);
 
-  return parseResult.success ? parseResult.data : null;
+    return parseResult.success ? parseResult.data : null;
+  } catch {
+    return null;
+  }
 };
 
 const filePath = (fileName: string) =>
