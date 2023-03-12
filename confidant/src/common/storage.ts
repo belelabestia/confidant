@@ -2,9 +2,10 @@ import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "fs";
 import { decrypt, encrypt } from "./crypto";
 import { Encrypted, FileName } from "./models";
 
-export const list = (): string[] => {
+export const list = (): FileName[] => {
   try {
-    return readdirSync("storage");
+    const files = readdirSync("storage");
+    return files.map((f) => FileName.parse(f.split(".")[0]));
   } catch {
     return [];
   }
